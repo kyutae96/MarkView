@@ -40,8 +40,8 @@ class GeneralActivity : Activity() {
                         letter_toggle_text.visibility = View.VISIBLE
                         letter_toggle_edit_img.visibility = View.VISIBLE
                         letter_toggle_edit_text.visibility = View.VISIBLE
-                        image_toggle_text.visibility = View.INVISIBLE
                         image_toggle_btn.visibility = View.INVISIBLE
+                        image_toggle_text.visibility = View.INVISIBLE
                         btn_image.visibility = View.INVISIBLE
                         image_toggle.isChecked = false
                     }
