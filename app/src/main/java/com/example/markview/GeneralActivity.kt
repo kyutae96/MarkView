@@ -136,6 +136,7 @@ class GeneralActivity : Activity() {
                         letter_toggle_edit_text.visibility = View.VISIBLE
                         spinner.visibility = View.VISIBLE
                         spinner2.visibility = View.VISIBLE
+                        lets_check.visibility = View.VISIBLE
                         image_toggle_btn.visibility = View.INVISIBLE
                         image_toggle_text.visibility = View.INVISIBLE
                         btn_image.visibility = View.INVISIBLE
@@ -149,6 +150,7 @@ class GeneralActivity : Activity() {
                         btn_image.visibility = View.VISIBLE
                         spinner.visibility = View.VISIBLE
                         spinner2.visibility = View.VISIBLE
+                        lets_check.visibility = View.VISIBLE
                         letter_toggle_text.visibility = View.INVISIBLE
                         letter_toggle_edit_text.visibility = View.INVISIBLE
                         letter_toggle_edit_img.visibility = View.INVISIBLE
@@ -194,9 +196,8 @@ class GeneralActivity : Activity() {
     }
 
     fun lets_check(view: View) {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, CheckActivity::class.java)
         startActivity(intent)
-        finish()
     }
 
 
