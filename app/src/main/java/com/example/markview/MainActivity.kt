@@ -68,7 +68,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.account -> Toast.makeText(this, "마이페이지", Toast.LENGTH_SHORT).show()
-            R.id.item2 -> Toast.makeText(this, "텍스트로 판별", Toast.LENGTH_SHORT).show()
+            R.id.item2 -> {
+                val intent = Intent(this, GeneralActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
             R.id.item3 -> Toast.makeText(this, "이미지로 판별", Toast.LENGTH_SHORT).show()
             R.id.item4 -> {
                 val intent = Intent(this, CostViewActivity::class.java)
@@ -100,7 +104,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                0 -> TestFragment.newInstance(R.raw.img1, "")
+                0 -> TestFragment.newInstance(R.drawable.mark_logo, "")
                 1 -> TestFragment.newInstance(R.raw.img2, "")
                 2 -> TestFragment.newInstance(R.raw.img3, "")
                 else -> TestFragment.newInstance(R.raw.img4, "")

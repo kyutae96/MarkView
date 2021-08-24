@@ -2,21 +2,33 @@ package com.example.markview
 
 import android.os.Bundle
 import android.app.Activity
+import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.core.view.get
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
+import kotlinx.android.synthetic.main.activity_check.*
 import kotlinx.android.synthetic.main.activity_general.*
 import kotlinx.android.synthetic.main.activity_login.*
+import java.io.File
+import java.io.StringReader
 import java.lang.Exception
 
 
 class GeneralActivity : Activity() {
 
     val Gallery = 0
+    val URL = "http://52.78.141.144:8001/health"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +55,7 @@ class GeneralActivity : Activity() {
         var data12 = resources.getStringArray(R.array.select_12)
         var data13 = resources.getStringArray(R.array.select_13)
         var data14 = resources.getStringArray(R.array.select_14)
-        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data)
+        var adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, data)
         var adapter0 = ArrayAdapter(this, android.R.layout.simple_list_item_1, data0)
         var adapter1 = ArrayAdapter(this, android.R.layout.simple_list_item_1, data1)
         var adapter2 = ArrayAdapter(this, android.R.layout.simple_list_item_1, data2)
@@ -164,6 +176,7 @@ class GeneralActivity : Activity() {
     private fun loadImage() {
         val intent = Intent()
         intent.type = "image/*"
+        intent.putExtra("crop", true)
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent, "Load Picture"), Gallery)
     }
@@ -172,20 +185,45 @@ class GeneralActivity : Activity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == Gallery) {
-            if (resultCode == RESULT_OK) {
-                var dataUri = data?.data
-                try {
-                    var bitmap: Bitmap =
-                        MediaStore.Images.Media.getBitmap(this.contentResolver, dataUri)
-                    btn_image.setImageBitmap(bitmap)
-                } catch (e: Exception) {
-                    Toast.makeText(this, "$e", Toast.LENGTH_SHORT).show()
+        when (requestCode) {
+            Gallery -> {
+                if (resultCode == RESULT_OK) {
+                    var dataUri = data?.data
+                    try {
+                        var bitmap: Bitmap =
+                            MediaStore.Images.Media.getBitmap(this.contentResolver, dataUri)
+                        btn_image.setImageBitmap(bitmap)
+                        launchImageCrop(dataUri)
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "$e", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, "권한설정을 해주세요.", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Toast.makeText(this, "권한설정을 해주세요.", Toast.LENGTH_SHORT).show()
             }
+            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == RESULT_OK) {
+                    result.uri?.let {
+
+                        btn_image.setImageBitmap(result.bitmap)
+                        btn_image.setImageURI(result.uri)
+
+                    }
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    val error = result.error
+                }
+            }
+
         }
+
+
+    }
+
+    private fun launchImageCrop(uri: Uri?) {
+        CropImage.activity(uri).setGuidelines(CropImageView.Guidelines.ON)
+            .setCropShape(CropImageView.CropShape.RECTANGLE)
+            .start(this)
     }
 
 
@@ -196,6 +234,7 @@ class GeneralActivity : Activity() {
     }
 
     fun lets_check(view: View) {
+
         val intent = Intent(this, CheckActivity::class.java)
         startActivity(intent)
     }
