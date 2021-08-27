@@ -231,6 +231,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline60" />
 
+            <TextView
+                android:id="@+id/name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline52"
+                app:layout_constraintStart_toStartOf="@+id/guideline34"
+                app:layout_constraintTop_toTopOf="@+id/guideline55" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline23"
                 android:layout_width="wrap_content"

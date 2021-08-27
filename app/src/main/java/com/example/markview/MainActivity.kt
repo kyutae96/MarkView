@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -136,7 +135,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun general_btn(view: View) {
-        val intent = Intent(this, GeneralActivity::class.java)
+        val intent = Intent(this, FirstActivity::class.java)
         startActivity(intent)
         finish()
     }
