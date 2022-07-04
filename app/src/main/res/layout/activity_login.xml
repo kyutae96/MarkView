@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:id="@+id/constraintLayout"
-    tools:context=".LoginActivity">
+    tools:context="com.marking.markview.LoginActivity">
 
     <ImageView
         android:id="@+id/imageView2"

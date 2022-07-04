@@ -1,4 +1,4 @@
-package com.example.markview
+package com.marking.markview
 
 import android.app.Activity
 import android.content.Intent
@@ -8,6 +8,7 @@ import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.markview.R
 
 
 class IntroActivity : Activity() {

@@ -1,4 +1,4 @@
-package com.example.markview
+package com.marking.markview
 
 import android.content.Intent
 import android.net.Uri
@@ -13,6 +13,7 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.example.markview.R
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_fragment.*

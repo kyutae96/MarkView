@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MarkView">
         <activity
-            android:name=".IntroActivity"
+            android:name="com.marking.markview.IntroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,12 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".CostViewActivity" />
-        <activity android:name=".GeneralActivity" />
-        <activity android:name=".CheckActivity"/>
-        <activity android:name=".FirstActivity"/>
+        <activity android:name="com.marking.markview.MainActivity" />
+        <activity android:name="com.marking.markview.LoginActivity" />
+        <activity android:name="com.marking.markview.CostViewActivity" />
+        <activity android:name="com.marking.markview.GeneralActivity" />
+        <activity android:name="com.marking.markview.CheckActivity"/>
+        <activity android:name="com.marking.markview.FirstActivity"/>
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
     </application>

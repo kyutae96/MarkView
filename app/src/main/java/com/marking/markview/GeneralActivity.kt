@@ -1,4 +1,4 @@
-package com.example.markview
+package com.marking.markview
 
 import android.os.Bundle
 import android.app.Activity
@@ -26,9 +26,7 @@ import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 import android.widget.ArrayAdapter
-
-
-
+import com.example.markview.R
 
 
 class GeneralActivity : Activity() {

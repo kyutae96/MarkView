@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
     android:background="@color/white"
-    tools:context=".GeneralActivity"
+    tools:context="com.marking.markview.GeneralActivity"
     >
 
     <ScrollView
