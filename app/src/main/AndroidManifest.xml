@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MarkView">
         <activity
-            android:name="com.marking.markview.IntroActivity"
+            android:name="com.marking.markview.TestActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

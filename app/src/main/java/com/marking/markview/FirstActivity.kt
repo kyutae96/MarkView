@@ -73,7 +73,7 @@ class FirstActivity : Activity() {
         val jsonObjectString = jsonObject.toString()
 
         GlobalScope.launch(Dispatchers.IO) {
-            val url = URL("http://13.209.160.145:8002/brand/query")
+            val url = URL("http://192.168.0.25:8002/brand/query")
 
             val httpURLConnection = url.openConnection() as HttpURLConnection
             httpURLConnection.requestMethod = "POST"

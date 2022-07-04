@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MarkView</string>
+    <string name="user_url">http://192.168.0.25:8002/api/admin/login</string>
 </resources>
