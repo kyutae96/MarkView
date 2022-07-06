@@ -3,63 +3,203 @@ package com.marking.markview
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.app.Activity
-import android.app.ProgressDialog
-import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
-import android.widget.*
-import androidx.core.view.get
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
-import kotlinx.android.synthetic.main.activity_general.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONArray
-import org.json.JSONObject
-import java.io.*
-import java.lang.Exception
-import java.net.HttpURLConnection
-import java.net.URL
-import android.widget.ArrayAdapter
-import androidx.appcompat.app.AppCompatDialog
-import androidx.core.content.ContextCompat
-import com.example.markview.R
 import com.example.markview.databinding.ActivityTestBinding
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.conn.util.InetAddressUtils
+import com.marking.markview.builder.RetrofitBuilder
+import com.marking.markview.model.Login.LoginModel
+import com.marking.markview.model.Login.LoginResponseModel
+import com.marking.markview.model.SignUp.Certification.CertificationInputModel
+import com.marking.markview.model.SignUp.Certification.CertificationResponseModel
+import com.marking.markview.model.SignUp.Unique.CheckDuplicateModel
+import com.marking.markview.model.SignUp.Unique.ResponseModel
+import com.marking.markview.model.SignUp.Unique.SignUpUniqueModel
+import com.marking.markview.model.SignUpResponseModel
+import com.marking.markview.model.SignUpUserModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import java.net.InetAddress
+import java.net.NetworkInterface
+import java.util.*
 
 
 class TestActivity : Activity() {
     val binding by lazy { ActivityTestBinding.inflate(layoutInflater) }
 
+    private var unique_key: String? = null
+    private var imp_uid: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_test)
+        setContentView(binding.root)
 
         binding.testDanal.setOnClickListener {
             binding.phoneRegistWeb.visibility = View.VISIBLE
             initWebView()
         }
 
+        binding.sendImpUid.setOnClickListener {
+            InputImpUid()
+        }
 
+        binding.sendResultUid.setOnClickListener {
+            InputUniqueKey()
+        }
+        binding.sendDuplicateUid.setOnClickListener {
+            CheckIdDuplicate()
+        }
+        binding.signUp.setOnClickListener {
+            SignUp()
+        }
+        binding.loginBtn.setOnClickListener {
+            Login()
+        }
+
+    }
+
+    private fun Login() { //로그인
+        val user_id = "kyutae0523"
+        val password = "tongview123!"
+        val login_ip = getIPAddress(true)
+
+        println(login_ip)
+
+        val data = LoginModel(user_id, password, login_ip)
+        RetrofitBuilder.api.getLoginInfo(data).enqueue(object : Callback<LoginResponseModel> {
+            override fun onResponse(
+                call: Call<LoginResponseModel>,
+                response: Response<LoginResponseModel>
+            ) {
+                val duplicate = response.body()
+                println("duplicate?.data")
+                println(duplicate?.data)
+                println(response)
+                println("duplicate?.data")
+
+            }
+
+            override fun onFailure(call: Call<LoginResponseModel>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
+    }
+
+
+    private fun SignUp() { //아이디 중복체크
+        val user_id = "kyutae0523"
+        val name = "김규태"
+        val password = "tongview123!"
+        val email = "kyutae0523@gmail.com"
+        val birthday = "1996-05-23"
+        val phone = "01032269252"
+        val gender = "M"
+        val unique_key =
+            "5Y4ylX5LVKjZ3MtpX6WaVbfSERjvZOMzYzpwHlcsMF1zWJGfa0p4fVTvekW5qy+q9KsSYuFfebbBC/3qe8+hJg=="
+        val department = "kyutae0523"
+        val zip_code = "kyutae0523"
+        val address = "kyutae0523"
+        val data = SignUpUserModel(
+            user_id,
+            name,
+            password,
+            email,
+            birthday,
+            phone,
+            gender,
+            unique_key,
+            department,
+            zip_code,
+            address
+        )
+        RetrofitBuilder.api.getSignInfo(data).enqueue(object : Callback<SignUpResponseModel> {
+            override fun onResponse(
+                call: Call<SignUpResponseModel>,
+                response: Response<SignUpResponseModel>
+            ) {
+                val duplicate = response.body()
+                println("duplicate?.data")
+                println(duplicate)
+                println(duplicate?.data)
+                println(response)
+                println("duplicate?.data")
+
+            }
+
+            override fun onFailure(call: Call<SignUpResponseModel>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
+    }
+
+    private fun CheckIdDuplicate() { //아이디 중복체크
+        val user_id = "kyutae0523"
+        val data = CheckDuplicateModel(user_id)
+        RetrofitBuilder.api.Duplicate(data).enqueue(object : Callback<ResponseModel> {
+            override fun onResponse(call: Call<ResponseModel>, response: Response<ResponseModel>) {
+                val duplicate = response.body()
+                println("duplicate?.data")
+                println(duplicate?.data)
+                println(response)
+                println("duplicate?.data")
+
+            }
+
+            override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
+    }
+
+
+    private fun InputUniqueKey() { //impuid input, name,birth, gender, phone, uniquekey response
+        println("unique_keyunique_key ${unique_key}")
+//        5Y4ylX5LVKjZ3MtpX6WaVbfSERjvZOMzYzpwHlcsMF1zWJGfa0p4fVTvekW5qy+q9KsSYuFfebbBC/3qe8+hJg==
+        val data = SignUpUniqueModel(unique_key)
+        RetrofitBuilder.api.getUserData(data).enqueue(object : Callback<ResponseModel> {
+            override fun onResponse(call: Call<ResponseModel>, response: Response<ResponseModel>) {
+                val userInfo = response.body()
+                println("userInfo?.data")
+                println(userInfo?.data)
+                println(response)
+                println("userInfo?.data")
+
+            }
+
+            override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
+                Log.d("error", t.message.toString())
+            }
+        })
+    }
+
+
+    private fun InputImpUid() { //impuid input, name,birth, gender, phone, uniquekey response
+        println("inputImpuid : $imp_uid")
+        val data = CertificationInputModel("imp_263090934205")
+        RetrofitBuilder.api.getCertification(data)
+            .enqueue(object : Callback<CertificationResponseModel> {
+                override fun onResponse(
+                    call: Call<CertificationResponseModel>,
+                    response: Response<CertificationResponseModel>
+                ) {
+                    val userInfo = response.body()
+                    println(userInfo?.data?.unique_key)
+                    unique_key = userInfo?.data?.unique_key
+
+                }
+
+                override fun onFailure(call: Call<CertificationResponseModel>, t: Throwable) {
+                    Log.d("error", t.message.toString())
+                }
+            })
     }
 
     //region Functions
     /** 휴대폰 인증 화면 (Danal Certification API) */
     @SuppressLint("SetJavaScriptEnabled")
-    fun initWebView(){
+    fun initWebView() {
         val settings = binding.phoneRegistWeb.settings
         settings.javaScriptEnabled = true
         settings.builtInZoomControls = true
@@ -73,59 +213,43 @@ class TestActivity : Activity() {
     }
 
     inner class JsHandler {
-        val API_URL = "https://api.iamport.kr/users/getToken/"
-        var retrofit : Retrofit
-        var iamportClient : IamportClient
-
-        init {
-            retrofit = Retrofit.Builder().baseUrl(API_URL).addConverterFactory(GsonConverterFactory.create()).build()
-            iamportClient = retrofit.create(IamportClient::class.java)
-        }
-
         @android.webkit.JavascriptInterface
-        fun getData(impUid : String) {
-            val apiKey : String = getString(R.string.iamportAPIKey)
-            val apiSecretKey : String = getString(R.string.iamportAPISecretKey)
-            val getData = iamportClient.token(AuthData(apiKey, apiSecretKey))
-            getData.enqueue(object : Callback<AccessToken> {
-                override fun onResponse(call: Call<AccessToken>?, response: Response<AccessToken>?) {
-                    if (response!!.isSuccessful) {
-                        println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-                        println("토큰은? ${response.body()!!.response?.accessToken}")
-                        println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-                        val token = response.body()?.response?.accessToken
-                        val getAuth = iamportClient.certification_by_imp_uid(token!!, impUid)
-                        getAuth.enqueue(object : Callback<Certification> {
-                            override fun onResponse(
-                                call: Call<Certification>?,
-                                response: Response<Certification>?
-                            ) {
-                                if (response!!.isSuccessful) {
-                                    println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-                                    println("인증정보 ${response.body()?.response}")
-                                    println("이름정보 ${response.body()?.response?.name}")
-                                    println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-                                    binding.phoneRegistWeb.visibility = View.GONE
-                                    binding.nameIconColor.visibility = View.VISIBLE
-                                    binding.phoneIconColor.visibility = View.VISIBLE
-                                    binding.nameChangeColor.text = "본인인증완료"
-                                    binding.nameChangeColor.setTextColor(ContextCompat.getColor(this@RegistrationActivity, R.color.be_marktong))
-                                    binding.etRegistrationName.text = response.body()?.response?.name.toString()
-                                    binding.etRegistrationPhone.text = response.body()?.response?.phone.toString()
-                                }
-                            }
+        fun getData(impUid: String) {
+            println("impUid")
+            println(impUid)
+            println("impUid")
+            imp_uid = impUid
+        }
+    }
 
-                            override fun onFailure(call: Call<Certification>, t: Throwable) {
+
+    fun getIPAddress(useIPv4: Boolean): String {
+        try {
+            val interfaces: List<NetworkInterface> =
+                Collections.list(NetworkInterface.getNetworkInterfaces())
+            for (intf in interfaces) {
+                val addrs: List<InetAddress> =
+                    Collections.list(intf.inetAddresses)
+                for (addr in addrs) {
+                    if (!addr.isLoopbackAddress) {
+                        val sAddr = addr.hostAddress.toUpperCase()
+                        val isIPv4 = InetAddressUtils.isIPv4Address(sAddr)
+                        if (useIPv4) {
+                            if (isIPv4) return sAddr
+                        } else {
+                            if (!isIPv4) {
+                                val delim =
+                                    sAddr.indexOf('%') // drop ip6 port suffix
+                                return if (delim < 0) sAddr else sAddr.substring(0, delim)
                             }
-                        })
+                        }
                     }
                 }
-
-                override fun onFailure(call: Call<AccessToken>, t: Throwable) {
-                }
-
-            })
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+        return ""
     }
 }
 

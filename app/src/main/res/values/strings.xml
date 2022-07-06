@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MarkView</string>
     <string name="user_url">http://192.168.0.25:8002/api/admin/login</string>
+    <string name="iamportAPIKey">4712712663200795</string>
+    <string name="iamportAPISecretKey">388daf66e333147a98fad87a182c6d08ae8493a6d9a62d7737d54ed1a0322f47a18795342747ac80</string>
+
 </resources>

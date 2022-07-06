@@ -6,13 +6,19 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MarkView">
+        android:theme="@style/Theme.MarkView"
+        android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true">
+
+        <uses-library android:name="org.apache.http.legacy"
+            android:required="false"/>
+
+
         <activity
-            android:name="com.marking.markview.TestActivity"
+            android:name="com.marking.markview.IntroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +30,7 @@
         <activity android:name="com.marking.markview.LoginActivity" />
         <activity android:name="com.marking.markview.CostViewActivity" />
         <activity android:name="com.marking.markview.GeneralActivity" />
+        <activity android:name="com.marking.markview.TestActivity" />
         <activity android:name="com.marking.markview.CheckActivity"/>
         <activity android:name="com.marking.markview.FirstActivity"/>
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
