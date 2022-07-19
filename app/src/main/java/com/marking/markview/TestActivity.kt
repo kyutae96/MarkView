@@ -30,6 +30,8 @@ import java.util.*
 class TestActivity : Activity() {
     val binding by lazy { ActivityTestBinding.inflate(layoutInflater) }
 
+    var test_string : String? = null
+
     private var unique_key: String? = null
     private var imp_uid: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +59,11 @@ class TestActivity : Activity() {
         binding.loginBtn.setOnClickListener {
             Login()
         }
+        binding.testBtn.setOnClickListener {
+
+            println("null 아니면 테스트 성공 : $test_string")
+
+        }
 
     }
 
@@ -78,6 +85,8 @@ class TestActivity : Activity() {
                 println(duplicate?.data)
                 println(response)
                 println("duplicate?.data")
+
+                test_string = duplicate?.data.toString()
 
             }
 
